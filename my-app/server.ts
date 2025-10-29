@@ -14,7 +14,7 @@ const DB_FILE = join(__dirname, 'usuarios.txt');
 app.use(cors());
 app.use(express.json());
 
-// Inicializar archivo si no existe
+// Inicializar archivo
 try {
   readFileSync(DB_FILE, 'utf-8');
 } catch {
@@ -32,13 +32,13 @@ const guardarUsuarios = (usuarios: any[]) => {
   writeFileSync(DB_FILE, JSON.stringify(usuarios, null, 2));
 };
 
-// GET - Obtener todos los usuarios
+// GET 
 app.get('/api/usuarios', (req, res) => {
   const usuarios = leerUsuarios();
   res.json(usuarios);
 });
 
-// POST - Crear usuario
+// POST 
 app.post('/api/usuarios', (req, res) => {
   const usuarios = leerUsuarios();
   const nuevoUsuario = {
@@ -58,7 +58,7 @@ app.post('/api/usuarios', (req, res) => {
   res.status(201).json(nuevoUsuario);
 });
 
-// PUT - Actualizar usuario
+// PUT 
 app.put('/api/usuarios/:id', (req, res) => {
   const usuarios = leerUsuarios();
   const index = usuarios.findIndex((u: any) => u.id === req.params.id);
@@ -81,7 +81,7 @@ app.put('/api/usuarios/:id', (req, res) => {
   }
 });
 
-// DELETE - Eliminar usuario
+// DELETE
 app.delete('/api/usuarios/:id', (req, res) => {
   const usuarios = leerUsuarios();
   const usuariosFiltrados = usuarios.filter((u: any) => u.id !== req.params.id);
