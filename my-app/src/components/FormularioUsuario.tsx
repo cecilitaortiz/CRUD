@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import type { Usuario } from '../types/Usuario';
+import {
+  CitySelect,
+  CountrySelect,
+  StateSelect
+} from "react-country-state-city";
+import "react-country-state-city/dist/react-country-state-city.css";
 
 interface FormularioUsuarioProps {
   usuarioEditar: Usuario | null;
@@ -15,18 +21,33 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
   const [nombre, setNombre] = useState('');
   const [numero, setNumero] = useState('');
   const [email, setEmail] = useState('');
+  const [countryId, setCountryId] = useState(0);
+  const [stateId, setStateId] = useState(0);
+  const [countryName, setCountryName] = useState('');
+  const [stateName, setStateName] = useState('');
+  const [cityName, setCityName] = useState('');
 
   useEffect(() => {
     if (usuarioEditar) {
       setNombre(usuarioEditar.nombre || '');
       setNumero(usuarioEditar.numero || '');
       setEmail(usuarioEditar.email || '');
+      setCountryName(usuarioEditar.pais || '');
+      setStateName(usuarioEditar.estado || '');
+      setCityName(usuarioEditar.ciudad || '');
     }
   }, [usuarioEditar]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onGuardar({ nombre, numero, email });
+    onGuardar({ 
+      nombre, 
+      numero, 
+      email,
+      pais: countryName,
+      estado: stateName,
+      ciudad: cityName
+    });
     limpiarFormulario();
   };
 
@@ -34,6 +55,11 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
     setNombre('');
     setNumero('');
     setEmail('');
+    setCountryId(0);
+    setStateId(0);
+    setCountryName('');
+    setStateName('');
+    setCityName('');
   };
 
   const handleCancelar = () => {
@@ -81,6 +107,48 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
         />
       </div>
 
+      <div style={styles.campo}>
+        <label style={styles.label}>País:</label>
+        <CountrySelect
+          onChange={(e: any) => {
+            setCountryId(e.id);
+            setCountryName(e.name);
+            setStateId(0);
+            setStateName('');
+            setCityName('');
+          }}
+          placeHolder="Selecciona un país"
+        />
+        {countryName && <p style={styles.selectedText}>Seleccionado: {countryName}</p>}
+      </div>
+
+      <div style={styles.campo}>
+        <label style={styles.label}>Estado/Provincia:</label>
+        <StateSelect
+          countryid={countryId}
+          onChange={(e: any) => {
+            setStateId(e.id);
+            setStateName(e.name);
+            setCityName('');
+          }}
+          placeHolder="Selecciona un estado"
+        />
+        {stateName && <p style={styles.selectedText}>Seleccionado: {stateName}</p>}
+      </div>
+
+      <div style={styles.campo}>
+        <label style={styles.label}>Ciudad:</label>
+        <CitySelect
+          countryid={countryId}
+          stateid={stateId}
+          onChange={(e: any) => {
+            setCityName(e.name);
+          }}
+          placeHolder="Selecciona una ciudad"
+        />
+        {cityName && <p style={styles.selectedText}>Seleccionado: {cityName}</p>}
+      </div>
+
       <div style={styles.botones}>
         <button type="submit" style={styles.btnGuardar}>
           {usuarioEditar ? 'Actualizar' : 'Agregar'}
@@ -119,6 +187,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: '1px solid #ccc',
     fontSize: '14px',
     boxSizing: 'border-box'
+  },
+  selectedText: {
+    fontSize: '12px',
+    color: '#666',
+    marginTop: '5px',
+    fontStyle: 'italic'
   },
   botones: {
     display: 'flex',

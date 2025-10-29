@@ -8,103 +8,143 @@ interface ListaUsuariosProps {
 }
 
 const ListaUsuarios: React.FC<ListaUsuariosProps> = ({ usuarios, onEditar, onEliminar }) => {
-  if (!usuarios || usuarios.length === 0) {
-    return <p style={styles.vacio}>No hay usuarios registrados.</p>;
-  }
-
   return (
     <div style={styles.contenedor}>
-      <h3>Lista de Usuarios ({usuarios.length})</h3>
-      <table style={styles.tabla}>
-        <thead>
-          <tr style={styles.encabezado}>
-            <th style={styles.th}>Nombre</th>
-            <th style={styles.th}>Número</th>
-            <th style={styles.th}>Email</th>
-            <th style={styles.th}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+      <h3 style={styles.titulo}>Lista de Usuarios ({usuarios.length})</h3>
+      
+      {usuarios.length === 0 ? (
+        <p style={styles.mensajeVacio}>No hay usuarios registrados</p>
+      ) : (
+        <div style={styles.tabla}>
+          <div style={styles.encabezado}>
+            <div style={styles.celda}>Nombre</div>
+            <div style={styles.celda}>Número</div>
+            <div style={styles.celda}>Email</div>
+            <div style={styles.celda}>Ubicación</div>
+            <div style={styles.celdaAcciones}>Acciones</div>
+          </div>
+          
           {usuarios.map((usuario) => (
-            <tr key={usuario.id} style={styles.fila}>
-              <td style={styles.td}>{usuario.nombre}</td>
-              <td style={styles.td}>{usuario.numero}</td>
-              <td style={styles.td}>{usuario.email}</td>
-              <td style={styles.td}>
-                <button
-                  onClick={() => onEditar(usuario)}
+            <div key={usuario.id} style={styles.fila}>
+              <div style={styles.celda}>{usuario.nombre}</div>
+              <div style={styles.celda}>{usuario.numero}</div>
+              <div style={styles.celda}>{usuario.email}</div>
+              <div style={styles.celda}>
+                {usuario.ciudad && usuario.estado && usuario.pais ? (
+                  <span style={styles.ubicacion}>
+                    {usuario.pais},{usuario.estado}, {usuario.ciudad}
+                  </span>
+                ) : (
+                  <span style={styles.sinUbicacion}>Sin ubicación</span>
+                )}
+              </div>
+              <div style={styles.celdaAcciones}>
+                <button 
+                  onClick={() => onEditar(usuario)} 
                   style={styles.btnEditar}
+                  title="Editar usuario"
                 >
                   Editar
                 </button>
-                <button
-                  onClick={() => onEliminar(usuario.id)}
+                <button 
+                  onClick={() => {
+                    if (window.confirm(`¿Eliminar a ${usuario.nombre}?`)) {
+                      onEliminar(usuario.id);
+                    }
+                  }}
                   style={styles.btnEliminar}
+                  title="Eliminar usuario"
                 >
                   Eliminar
                 </button>
-              </td>
-            </tr>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
     </div>
   );
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
   contenedor: {
-    marginTop: '20px'
-  },
-  vacio: {
-    textAlign: 'center',
-    color: '#666',
-    fontSize: '14px',
+    backgroundColor: 'white',
     padding: '20px',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '4px'
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+  },
+  titulo: {
+    marginTop: 0,
+    marginBottom: '15px',
+    color: '#333'
+  },
+  mensajeVacio: {
+    textAlign: 'center',
+    color: '#999',
+    padding: '20px'
   },
   tabla: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    backgroundColor: 'white',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    borderRadius: '4px',
-    overflow: 'hidden'
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px'
   },
   encabezado: {
-    backgroundColor: '#2196F3',
-    color: 'white'
-  },
-  th: {
-    padding: '12px',
-    textAlign: 'left',
-    fontWeight: 'bold'
+    display: 'grid',
+    gridTemplateColumns: '1.5fr 1fr 1.5fr 2fr 120px',
+    gap: '10px',
+    padding: '10px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    fontWeight: 'bold',
+    borderRadius: '4px',
+    fontSize: '14px'
   },
   fila: {
-    borderBottom: '1px solid #ddd'
+    display: 'grid',
+    gridTemplateColumns: '1.5fr 1fr 1.5fr 2fr 120px',
+    gap: '10px',
+    padding: '12px',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '4px',
+    alignItems: 'center',
+    fontSize: '14px'
   },
-  td: {
-    padding: '12px'
+  celda: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
+  },
+  celdaAcciones: {
+    display: 'flex',
+    gap: '8px',
+    justifyContent: 'center'
+  },
+  ubicacion: {
+    fontSize: '12px',
+    color: '#666'
+  },
+  sinUbicacion: {
+    fontSize: '12px',
+    color: '#999',
+    fontStyle: 'italic'
   },
   btnEditar: {
-    backgroundColor: '#FF9800',
+    padding: '6px 12px',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
-    padding: '6px 12px',
     borderRadius: '4px',
     cursor: 'pointer',
-    marginRight: '5px',
-    fontSize: '12px'
+    fontSize: '16px'
   },
   btnEliminar: {
+    padding: '6px 12px',
     backgroundColor: '#f44336',
     color: 'white',
     border: 'none',
-    padding: '6px 12px',
     borderRadius: '4px',
     cursor: 'pointer',
-    fontSize: '12px'
+    fontSize: '16px'
   }
 };
 

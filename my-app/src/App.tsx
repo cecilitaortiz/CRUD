@@ -15,12 +15,12 @@ function App() {
   const [usuarioEditar, setUsuarioEditar] = useState<Usuario | null>(null);
   const [mensaje, setMensaje] = useState<Mensaje | null>(null);
 
-  // Cargar usuarios al iniciar
+  // Cargar usuarios
   useEffect(() => {
     cargarUsuarios();
   }, []);
 
-  // === FUNCIONES CRUD ===
+
 
   const cargarUsuarios = async () => {
     try {
@@ -36,7 +36,7 @@ function App() {
   const guardarUsuario = async (datosUsuario: Omit<Usuario, 'id' | 'fechaCreacion' | 'fechaActualizacion'>) => {
     try {
       if (usuarioEditar) {
-        // Actualizar usuario existente
+        // Actualizar
         const response = await fetch(`${API_URL}/${usuarioEditar.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -48,7 +48,7 @@ function App() {
           setUsuarioEditar(null);
         }
       } else {
-        // Crear nuevo usuario
+        // Crear 
         const response = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -68,9 +68,6 @@ function App() {
   };
 
   const eliminarUsuario = async (id: string) => {
-    if (!window.confirm('¿Estás seguro de eliminar este usuario?')) {
-      return;
-    }
 
     try {
       const response = await fetch(`${API_URL}/${id}`, {
@@ -87,7 +84,7 @@ function App() {
     }
   };
 
-  // === FUNCIONES AUXILIARES ===
+//editar
 
   const editarUsuario = (usuario: Usuario) => {
     setUsuarioEditar(usuario);
