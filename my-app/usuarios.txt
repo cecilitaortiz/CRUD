@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1761704212132",
+    "nombre": "Cecilia",
+    "numero": "123",
+    "email": "a@a.com",
+    "fechaCreacion": "2025-10-29T02:16:52.132Z"
+  },
+  {
+    "id": "1761704224191",
+    "nombre": "b",
+    "numero": "234",
+    "email": "c.c@d.com",
+    "fechaCreacion": "2025-10-29T02:17:04.191Z"
+  }
+]
