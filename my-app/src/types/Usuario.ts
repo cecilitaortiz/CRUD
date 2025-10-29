@@ -3,6 +3,7 @@ export interface Usuario {
   nombre: string;
   numero: string;
   email: string;
+  direccion : string;
   pais?: string;
   estado?: string;
   ciudad?: string;

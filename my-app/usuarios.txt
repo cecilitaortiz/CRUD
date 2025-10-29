@@ -1,35 +1,26 @@
 [
   {
-    "id": "1761747912657",
-    "nombre": "A",
-    "numero": "3423",
-    "email": "a@a.com",
-    "pais": "Ecuador",
-    "estado": "Chimborazo",
-    "ciudad": "Guano",
-    "fechaCreacion": "2025-10-29T14:25:12.657Z",
-    "fechaActualizacion": "2025-10-29T14:25:12.657Z"
+    "id": "1761765472194",
+    "nombre": "Cecilia",
+    "numero": "7979779",
+    "email": "79@fws.com",
+    "pais": "Afghanistan",
+    "estado": "Badghis",
+    "ciudad": "Ghormach",
+    "fechaCreacion": "2025-10-29T19:17:52.194Z",
+    "fechaActualizacion": "2025-10-29T19:18:34.951Z",
+    "direccion": "ahora si"
   },
   {
-    "id": "1761752851954",
-    "nombre": "Juan",
-    "numero": "123456",
-    "email": "a@a.com",
+    "id": "1761766159300",
+    "nombre": "Cecilia",
+    "numero": "9999999999",
+    "email": "79@fws.com",
     "pais": "Ecuador",
-    "estado": "Guayas",
-    "ciudad": "Guayaquil",
-    "fechaCreacion": "2025-10-29T15:47:31.954Z",
-    "fechaActualizacion": "2025-10-29T15:47:31.954Z"
-  },
-  {
-    "id": "1761763616800",
-    "nombre": "Cecilia Ortiz",
-    "numero": "123456",
-    "email": "a@a.com",
-    "pais": "Ecuador",
-    "estado": "Santa Elena",
-    "ciudad": "Salinas",
-    "fechaCreacion": "2025-10-29T18:46:56.800Z",
-    "fechaActualizacion": "2025-10-29T18:46:56.800Z"
+    "estado": "Bolívar",
+    "ciudad": "Guaranda",
+    "direccion": "Calle 1232 ",
+    "fechaCreacion": "2025-10-29T19:29:19.300Z",
+    "fechaActualizacion": "2025-10-29T19:29:19.300Z"
   }
 ]

@@ -26,6 +26,7 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
   const [countryName, setCountryName] = useState('');
   const [stateName, setStateName] = useState('');
   const [cityName, setCityName] = useState('');
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     if (usuarioEditar) {
@@ -35,6 +36,7 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
       setCountryName(usuarioEditar.pais || '');
       setStateName(usuarioEditar.estado || '');
       setCityName(usuarioEditar.ciudad || '');
+      setAddress(usuarioEditar.direccion || '');
     }
   }, [usuarioEditar]);
 
@@ -44,6 +46,7 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
       nombre, 
       numero, 
       email,
+      direccion: address,
       pais: countryName,
       estado: stateName,
       ciudad: cityName
@@ -60,6 +63,7 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
     setCountryName('');
     setStateName('');
     setCityName('');
+    setAddress('');
   };
 
   const handleCancelar = () => {
@@ -76,7 +80,12 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
         <input
           type="text"
           value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^[a-zA-ZñÑ\s]*$/.test(value)) {
+              setNombre(value);
+            }
+          }}
           required
           style={styles.input}
           placeholder="Ej: Juan Pérez"
@@ -90,6 +99,8 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
           value={numero}
           onChange={(e) => setNumero(e.target.value)}
           required
+          min="0"
+          maxLength={10}
           style={styles.input}
           placeholder="Ej: 555-1234"
         />
@@ -102,8 +113,21 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          maxLength={20}
           style={styles.input}
           placeholder="Ej: correo@ejemplo.com"
+        />
+      </div>
+       <div style={styles.campo}>
+        <label style={styles.label}>Dirección:</label>
+        <input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          required
+          maxLength={50}
+          style={styles.input}
+          placeholder="Ej: Calle Falsa 123"
         />
       </div>
 
@@ -125,11 +149,13 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
       <div style={styles.campo}>
         <label style={styles.label}>Estado/Provincia:</label>
         <StateSelect
+          key={`state-${countryId}`}
           countryid={countryId}
           onChange={(e: any) => {
             setStateId(e.id);
-            setStateName(e.name);
             setCityName('');
+            setStateName(e.name);
+            
           }}
           placeHolder="Selecciona un estado"
         />
@@ -139,6 +165,7 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
       <div style={styles.campo}>
         <label style={styles.label}>Ciudad:</label>
         <CitySelect
+          key={`city-${countryId}-${stateId}`}
           countryid={countryId}
           stateid={stateId}
           onChange={(e: any) => {

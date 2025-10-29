@@ -20,7 +20,7 @@ const ListaUsuarios: React.FC<ListaUsuariosProps> = ({ usuarios, onEditar, onEli
             <div style={styles.celda}>Nombre</div>
             <div style={styles.celda}>Número</div>
             <div style={styles.celda}>Email</div>
-            <div style={styles.celda}>Ubicación</div>
+            <div style={styles.celda}>Dirección</div>
             <div style={styles.celdaAcciones}>Acciones</div>
           </div>
           
@@ -30,9 +30,9 @@ const ListaUsuarios: React.FC<ListaUsuariosProps> = ({ usuarios, onEditar, onEli
               <div style={styles.celda}>{usuario.numero}</div>
               <div style={styles.celda}>{usuario.email}</div>
               <div style={styles.celda}>
-                {usuario.ciudad && usuario.estado && usuario.pais ? (
-                  <span style={styles.ubicacion}>
-                    {usuario.pais},{usuario.estado}, {usuario.ciudad}
+                {usuario.direccion ? (
+                  <span style={styles.direccion}>
+                    {usuario.direccion}
                   </span>
                 ) : (
                   <span style={styles.sinUbicacion}>Sin ubicación</span>
@@ -119,7 +119,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '8px',
     justifyContent: 'center'
   },
-  ubicacion: {
+  direccion: {
     fontSize: '12px',
     color: '#666'
   },

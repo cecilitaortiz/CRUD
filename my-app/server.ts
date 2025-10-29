@@ -49,6 +49,7 @@ app.post('/api/usuarios', (req, res) => {
     pais: req.body.pais || '',
     estado: req.body.estado || '',
     ciudad: req.body.ciudad || '',
+    direccion: req.body.direccion || '',
     fechaCreacion: new Date().toISOString(),
     fechaActualizacion: new Date().toISOString()
   };
@@ -66,12 +67,13 @@ app.put('/api/usuarios/:id', (req, res) => {
   if (index !== -1) {
     usuarios[index] = {
       ...usuarios[index],
-      nombre: req.body.nombre || usuarios[index].nombre,
-      numero: req.body.numero || usuarios[index].numero,
-      email: req.body.email || usuarios[index].email,
-      pais: req.body.pais || usuarios[index].pais,
-      estado: req.body.estado || usuarios[index].estado,
-      ciudad: req.body.ciudad || usuarios[index].ciudad,
+      nombre: req.body.nombre ?? usuarios[index].nombre,
+      numero: req.body.numero ?? usuarios[index].numero,
+      email: req.body.email ?? usuarios[index].email,
+      pais: req.body.pais ?? usuarios[index].pais,
+      estado: req.body.estado ?? usuarios[index].estado,
+      ciudad: req.body.ciudad ?? usuarios[index].ciudad,
+      direccion: req.body.direccion ?? usuarios[index].direccion,
       fechaActualizacion: new Date().toISOString()
     };
     guardarUsuarios(usuarios);
