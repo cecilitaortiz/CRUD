@@ -9,9 +9,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "tsx server.ts",
-    "start": "concurrently \"npm run server\" \"npm run dev\""
+    "start": "concurrently \"npm run server\" \"npm run dev\"",
+    "migrate": "tsx migrate-to-sqlite.ts"
   },
   "dependencies": {
+    "better-sqlite3": "^12.4.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "react": "^19.1.1",
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^24.6.0",
