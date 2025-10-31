@@ -1,17 +1,5 @@
 [
   {
-    "id": "1761765472194",
-    "nombre": "Cecilia",
-    "numero": "7979779",
-    "email": "79@fws.com",
-    "pais": "Afghanistan",
-    "estado": "Badghis",
-    "ciudad": "Ghormach",
-    "fechaCreacion": "2025-10-29T19:17:52.194Z",
-    "fechaActualizacion": "2025-10-29T19:18:34.951Z",
-    "direccion": "ahora si"
-  },
-  {
     "id": "1761766159300",
     "nombre": "Cecilia",
     "numero": "9999999999",

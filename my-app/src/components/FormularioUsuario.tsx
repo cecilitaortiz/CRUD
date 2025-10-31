@@ -37,6 +37,10 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
       setStateName(usuarioEditar.estado || '');
       setCityName(usuarioEditar.ciudad || '');
       setAddress(usuarioEditar.direccion || '');
+      setCountryId(0);
+      setStateId(0);
+    } else {
+      limpiarFormulario();
     }
   }, [usuarioEditar]);
 
@@ -80,6 +84,7 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
         <input
           type="text"
           value={nombre}
+          maxLength={50}
           onChange={(e) => {
             const value = e.target.value;
             if (/^[a-zA-ZñÑ\s]*$/.test(value)) {
@@ -97,7 +102,12 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
         <input
           type="tel"
           value={numero}
-          onChange={(e) => setNumero(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^[0-9]*$/.test(value)) {
+              setNumero(value);
+            }
+          }}
           required
           min="0"
           maxLength={10}
@@ -133,6 +143,12 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
 
       <div style={styles.campo}>
         <label style={styles.label}>País:</label>
+        {usuarioEditar && countryName && countryId === 0 ? (
+          <div>
+            <p style={styles.selectedText}>Valor actual: <strong>{countryName}</strong></p>
+            <small style={styles.ayuda}>Selecciona un nuevo país para cambiar</small>
+          </div>
+        ) : null}
         <CountrySelect
           onChange={(e: any) => {
             setCountryId(e.id);
@@ -141,13 +157,19 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
             setStateName('');
             setCityName('');
           }}
-          placeHolder="Selecciona un país"
+          placeHolder={usuarioEditar && countryName ? `Cambiar de: ${countryName}` : "Selecciona un país"}
         />
-        {countryName && <p style={styles.selectedText}>Seleccionado: {countryName}</p>}
+        {countryName && countryId !== 0 && <p style={styles.selectedText}>Nuevo: {countryName}</p>}
       </div>
 
       <div style={styles.campo}>
         <label style={styles.label}>Estado/Provincia:</label>
+        {usuarioEditar && stateName && stateId === 0 ? (
+          <div>
+            <p style={styles.selectedText}>Valor actual: <strong>{stateName}</strong></p>
+            <small style={styles.ayuda}>Selecciona primero un país</small>
+          </div>
+        ) : null}
         <StateSelect
           key={`state-${countryId}`}
           countryid={countryId}
@@ -157,13 +179,19 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
             setStateName(e.name);
             
           }}
-          placeHolder="Selecciona un estado"
+          placeHolder={usuarioEditar && stateName ? `Cambiar de: ${stateName}` : "Selecciona un estado"}
         />
-        {stateName && <p style={styles.selectedText}>Seleccionado: {stateName}</p>}
+        {stateName && stateId !== 0 && <p style={styles.selectedText}>Nuevo: {stateName}</p>}
       </div>
 
       <div style={styles.campo}>
         <label style={styles.label}>Ciudad:</label>
+        {usuarioEditar && cityName && stateId === 0 ? (
+          <div>
+            <p style={styles.selectedText}>Valor actual: <strong>{cityName}</strong></p>
+            <small style={styles.ayuda}>Selecciona primero un país y estado</small>
+          </div>
+        ) : null}
         <CitySelect
           key={`city-${countryId}-${stateId}`}
           countryid={countryId}
@@ -171,9 +199,9 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
           onChange={(e: any) => {
             setCityName(e.name);
           }}
-          placeHolder="Selecciona una ciudad"
+          placeHolder={usuarioEditar && cityName ? `Cambiar de: ${cityName}` : "Selecciona una ciudad"}
         />
-        {cityName && <p style={styles.selectedText}>Seleccionado: {cityName}</p>}
+        {cityName && (countryId !== 0 || stateId !== 0) && <p style={styles.selectedText}>Nuevo: {cityName}</p>}
       </div>
 
       <div style={styles.botones}>
@@ -220,6 +248,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: '#666',
     marginTop: '5px',
     fontStyle: 'italic'
+  },
+  ayuda: {
+    fontSize: '11px',
+    color: '#999',
+    display: 'block',
+    marginTop: '4px',
+    marginBottom: '8px'
   },
   botones: {
     display: 'flex',
