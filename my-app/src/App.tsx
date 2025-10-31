@@ -25,11 +25,25 @@ function App() {
   const cargarUsuarios = async () => {
     try {
       const response = await fetch(API_URL);
+      
+      if (!response.ok) {
+        throw new Error(`Error del servidor: ${response.status}`);
+      }
+      
       const data = await response.json();
-      setUsuarios(data);
+      
+      // Verificar que data sea un array
+      if (Array.isArray(data)) {
+        setUsuarios(data);
+      } else {
+        console.error('La respuesta no es un array:', data);
+        setUsuarios([]);
+        mostrarMensaje('Error: respuesta inesperada del servidor', 'error');
+      }
     } catch (error) {
       mostrarMensaje('Error al cargar usuarios. Verifica que el servidor esté ejecutándose.', 'error');
       console.error('Error:', error);
+      setUsuarios([]); 
     }
   };
 

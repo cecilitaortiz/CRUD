@@ -18,26 +18,18 @@ const ListaUsuarios: React.FC<ListaUsuariosProps> = ({ usuarios, onEditar, onEli
         <div style={styles.tabla}>
           <div style={styles.encabezado}>
             <div style={styles.celda}>Nombre</div>
-            <div style={styles.celda}>Número</div>
-            <div style={styles.celda}>Email</div>
             <div style={styles.celda}>Dirección</div>
+            <div style={styles.celda}>Estado</div>
+            <div style={styles.celda}>Ciudad</div>
             <div style={styles.celdaAcciones}>Acciones</div>
           </div>
           
-          {usuarios.map((usuario) => (
-            <div key={usuario.id} style={styles.fila}>
-              <div style={styles.celda}>{usuario.nombre}</div>
-              <div style={styles.celda}>{usuario.numero}</div>
-              <div style={styles.celda}>{usuario.email}</div>
-              <div style={styles.celda}>
-                {usuario.direccion ? (
-                  <span style={styles.direccion}>
-                    {usuario.direccion}
-                  </span>
-                ) : (
-                  <span style={styles.sinUbicacion}>Sin ubicación</span>
-                )}
-              </div>
+          {usuarios.map((usuario, index) => (
+            <div key={usuario.id || `usuario-${index}`} style={styles.fila}>
+              <div style={styles.celda}>{usuario.nombre || 'Sin nombre'}</div>
+              <div style={styles.celda}>{usuario.direccion || 'Sin dirección'}</div>
+              <div style={styles.celda}>{usuario.estado || 'Sin estado'}</div>
+              <div style={styles.celda}>{usuario.ciudad || 'Sin ciudad'}</div>
               <div style={styles.celdaAcciones}>
                 <button 
                   onClick={() => onEditar(usuario)} 
@@ -90,7 +82,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   encabezado: {
     display: 'grid',
-    gridTemplateColumns: '1.5fr 1fr 1.5fr 2fr 120px',
+    gridTemplateColumns: '2fr 1.5fr 1fr 1fr 120px',
     gap: '10px',
     padding: '10px',
     backgroundColor: '#4CAF50',
@@ -101,7 +93,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   fila: {
     display: 'grid',
-    gridTemplateColumns: '1.5fr 1fr 1.5fr 2fr 120px',
+    gridTemplateColumns: '2fr 1.5fr 1fr 1fr 120px',
     gap: '10px',
     padding: '12px',
     backgroundColor: '#f9f9f9',
