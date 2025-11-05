@@ -1,4 +1,4 @@
-// @ts-ignore - ibm_db no tiene tipos oficiales completos
+// @ts-ignore
 import * as ibmdb from 'ibm_db';
 import dotenv from 'dotenv';
 
@@ -12,7 +12,7 @@ if (!DB2_CONN) {
 
 /**
  * Ejecuta una query SQL en DB2
- * @param sql - Query SQL (usa ? para parámetros)
+ * @param sql - Query SQL 
  * @param params - Array de parámetros
  * @returns Promise con los resultados
  */
@@ -52,7 +52,7 @@ export function query(sql: string, params: any[] = []): Promise<any[]> {
               return reject(errFetch);
             }
 
-            // Procesar resultados - DB2 a veces devuelve datos anidados
+            // Procesar resultados 
             let processedData = data || [];
             
             // Si los datos vienen en formato { value: [...] }, extraer el array

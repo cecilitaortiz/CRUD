@@ -108,7 +108,7 @@ app.get('/api/usuarios/:id', async (req, res) => {
 app.post('/api/usuarios', async (req, res) => {
   try {
     // Nota: Por ahora retornamos error ya que insertar requiere IDs de las tablas relacionadas
-    // Se puede implementar después con los IDs correctos de país, provincia, cantón
+    
     res.status(501).json({ 
       error: 'Creación no implementada aún',
       message: 'Para crear usuarios se requieren los IDs de país, provincia y cantón. Usa el frontend para consultar datos existentes.'
@@ -140,7 +140,7 @@ app.delete('/api/usuarios/:id', (req, res) => {
   });
 });
 
-// Endpoint adicional: Obtener países
+
 app.get('/api/paises', async (req, res) => {
   try {
     const paises = await query('SELECT IDPAIS as id, NOMBRE as nombre FROM TBL_PAIS ORDER BY NOMBRE');
@@ -151,7 +151,6 @@ app.get('/api/paises', async (req, res) => {
   }
 });
 
-// Endpoint adicional: Obtener provincias por país
 app.get('/api/provincias/:idPais', async (req, res) => {
   try {
     const provincias = await query(
@@ -165,7 +164,7 @@ app.get('/api/provincias/:idPais', async (req, res) => {
   }
 });
 
-// Endpoint adicional: Obtener cantones por provincia
+
 app.get('/api/cantones/:idProvincia', async (req, res) => {
   try {
     const cantones = await query(
