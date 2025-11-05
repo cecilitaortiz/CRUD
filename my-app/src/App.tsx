@@ -25,13 +25,13 @@ function App() {
   const cargarUsuarios = async () => {
     try {
       const response = await fetch(API_URL);
-      
+
       if (!response.ok) {
         throw new Error(`Error del servidor: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       // Verificar que data sea un array
       if (Array.isArray(data)) {
         setUsuarios(data);
@@ -43,7 +43,7 @@ function App() {
     } catch (error) {
       mostrarMensaje('Error al cargar usuarios. Verifica que el servidor esté ejecutándose.', 'error');
       console.error('Error:', error);
-      setUsuarios([]); 
+      setUsuarios([]);
     }
   };
 
@@ -87,7 +87,7 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(datosActualizar)
         });
-        
+
         if (response.ok) {
           mostrarMensaje('Usuario actualizado correctamente', 'exito');
           setUsuarioEditar(null);
@@ -125,7 +125,7 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(datosCrear)
         });
-        
+
         if (response.ok) {
           mostrarMensaje('Usuario agregado correctamente', 'exito');
         } else {
@@ -133,7 +133,7 @@ function App() {
           mostrarMensaje(`Error: ${error.error || 'No se pudo crear'}`, 'error');
         }
       }
-      
+
       cargarUsuarios();
     } catch (error) {
       mostrarMensaje('Error al guardar usuario', 'error');
@@ -147,7 +147,7 @@ function App() {
       const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE'
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         mostrarMensaje(data.message || 'Usuario eliminado correctamente', 'exito');
@@ -162,7 +162,7 @@ function App() {
     }
   };
 
-//editar
+  //editar
 
   const editarUsuario = (usuario: Usuario) => {
     setUsuarioEditar(usuario);
@@ -183,6 +183,11 @@ function App() {
       <div style={styles.contenido}>
         <h1 style={styles.titulo}>Sistema CRUD de Usuarios</h1>
 
+        <FormularioUsuario
+          usuarioEditar={usuarioEditar}
+          onGuardar={guardarUsuario}
+          onCancelar={cancelarEdicion}
+        />
         {mensaje && (
           <div style={{
             ...styles.mensaje,
@@ -191,13 +196,6 @@ function App() {
             {mensaje.texto}
           </div>
         )}
-
-        <FormularioUsuario
-          usuarioEditar={usuarioEditar}
-          onGuardar={guardarUsuario}
-          onCancelar={cancelarEdicion}
-        />
-
         <ListaUsuarios
           usuarios={usuarios}
           onEditar={editarUsuario}

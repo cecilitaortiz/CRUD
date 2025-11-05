@@ -174,6 +174,19 @@ app.post('/api/usuarios', async (req, res) => {
       nacionalidadFinal
     });
 
+    // Verificar si ya existe una persona con ese número de identificación
+    const [existente] = await query(
+      'SELECT IDPERSONA FROM TBL_PERSONA WHERE NUMEROIDENTIFICACION = ?',
+      [numeroIdentificacion]
+    );
+
+    if (existente) {
+      return res.status(400).json({ 
+        error: 'Ya existe una persona con ese número de identificación',
+        numeroIdentificacion 
+      });
+    }
+
     // Obtener IDPAIS del cantón seleccionado
     const [cantonInfo] = await query(
       `SELECT pr.IDPAIS 
@@ -309,6 +322,19 @@ app.put('/api/usuarios/:id', async (req, res) => {
     // Validar campos
     if (!tipoIdentificacion || !numeroIdentificacion) {
       return res.status(400).json({ error: 'Tipo y número de identificación son requeridos' });
+    }
+
+    // Verificar si el número de identificación ya existe en otra persona
+    const [existente] = await query(
+      'SELECT IDPERSONA FROM TBL_PERSONA WHERE NUMEROIDENTIFICACION = ? AND IDPERSONA != ?',
+      [numeroIdentificacion, id]
+    );
+
+    if (existente) {
+      return res.status(400).json({ 
+        error: 'Ya existe otra persona con ese número de identificación',
+        numeroIdentificacion 
+      });
     }
 
     // Validar canton
@@ -468,7 +494,7 @@ app.delete('/api/usuarios/:id', async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    console.log(`🗑️ Realizando eliminación LÓGICA del usuario ${id}`);
+    console.log(`Eliminación del usuario ${id}`);
 
     // Marcar como inactivo 
     await execute(
