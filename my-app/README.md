@@ -76,19 +76,7 @@ my-app/
 | PUT    | `/api/usuarios/:id`   | Actualizar un usuario    |
 | DELETE | `/api/usuarios/:id`   | Eliminar un usuario      |
 
-## 💾 Formato del archivo usuarios.txt
 
-```json
-[
-  {
-    "id": "1730123456789",
-    "nombre": "Juan Pérez",
-    "numero": "555-1234",
-    "email": "juan@ejemplo.com",
-    "fechaCreacion": "2025-10-28T12:34:56.789Z"
-  }
-]
-```
 
 ## 🛠️ Tecnologías
 

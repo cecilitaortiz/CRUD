@@ -17,19 +17,25 @@ const ListaUsuarios: React.FC<ListaUsuariosProps> = ({ usuarios, onEditar, onEli
       ) : (
         <div style={styles.tabla}>
           <div style={styles.encabezado}>
+            <div style={styles.celda}>ID</div>
             <div style={styles.celda}>Nombre</div>
-            <div style={styles.celda}>Dirección</div>
-            <div style={styles.celda}>Estado</div>
+            <div style={styles.celda}>Identificación</div>
+            <div style={styles.celda}>Email</div>
+            <div style={styles.celda}>Teléfono</div>
             <div style={styles.celda}>Ciudad</div>
             <div style={styles.celdaAcciones}>Acciones</div>
           </div>
           
-          {usuarios.map((usuario, index) => (
-            <div key={usuario.id || `usuario-${index}`} style={styles.fila}>
-              <div style={styles.celda}>{usuario.nombre || 'Sin nombre'}</div>
-              <div style={styles.celda}>{usuario.direccion || 'Sin dirección'}</div>
-              <div style={styles.celda}>{usuario.estado || 'Sin estado'}</div>
-              <div style={styles.celda}>{usuario.ciudad || 'Sin ciudad'}</div>
+          {usuarios.map((usuario) => (
+            <div key={usuario.ID || usuario.id} style={styles.fila}>
+              <div style={styles.celda}>{usuario.ID || usuario.id}</div>
+              <div style={styles.celda}>{usuario.NOMBRE || usuario.nombre || 'Sin nombre'}</div>
+              <div style={styles.celda}>
+                {usuario.TIPOIDENTIFICACION || 'N/A'} {usuario.NUMEROIDENTIFICACION || 'Sin ID'}
+              </div>
+              <div style={styles.celda}>{usuario.EMAIL || usuario.email || 'Sin email'}</div>
+              <div style={styles.celda}>{usuario.NUMERO || usuario.numero || 'Sin teléfono'}</div>
+              <div style={styles.celda}>{usuario.CIUDAD || usuario.ciudad || 'Sin ciudad'}</div>
               <div style={styles.celdaAcciones}>
                 <button 
                   onClick={() => onEditar(usuario)} 
@@ -40,8 +46,9 @@ const ListaUsuarios: React.FC<ListaUsuariosProps> = ({ usuarios, onEditar, onEli
                 </button>
                 <button 
                   onClick={() => {
-                    if (window.confirm(`¿Eliminar a ${usuario.nombre}?`)) {
-                      onEliminar(usuario.id);
+                    const userId = usuario.ID || usuario.id;
+                    if (userId && window.confirm(`¿Eliminar a ${usuario.NOMBRE || usuario.nombre}?`)) {
+                      onEliminar(userId);
                     }
                   }}
                   style={styles.btnEliminar}
@@ -82,7 +89,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   encabezado: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1.5fr 1fr 1fr 120px',
+    gridTemplateColumns: '80px 2fr 1.5fr 1.5fr 1fr 1fr 140px',
     gap: '10px',
     padding: '10px',
     backgroundColor: '#4CAF50',
@@ -93,7 +100,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   fila: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1.5fr 1fr 1fr 120px',
+    gridTemplateColumns: '80px 2fr 1.5fr 1.5fr 1fr 1fr 140px',
     gap: '10px',
     padding: '12px',
     backgroundColor: '#f9f9f9',
