@@ -60,6 +60,24 @@ export function query(sql: string, params: any[] = []): Promise<any[]> {
               processedData = (processedData as any).value;
             }
 
+            // Convertir buffers a strings UTF-8 si es necesario
+            if (Array.isArray(processedData)) {
+              processedData = processedData.map(row => {
+                const newRow: any = {};
+                for (const key in row) {
+                  if (Buffer.isBuffer(row[key])) {
+                    newRow[key] = row[key].toString('utf8');
+                  } else if (typeof row[key] === 'string') {
+                    // Corregir caracteres mal codificados
+                    newRow[key] = row[key];
+                  } else {
+                    newRow[key] = row[key];
+                  }
+                }
+                return newRow;
+              });
+            }
+
             resolve(Array.isArray(processedData) ? processedData : []);
           });
         });

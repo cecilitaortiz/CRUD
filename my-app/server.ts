@@ -19,12 +19,12 @@ testConnection().then(isConnected => {
   }
 });
 
-// GET - Obtener personas (limitado a 10 registros por defecto)
+// GET - Obtener personas (limitado a 10 registros)
 app.get('/api/usuarios', async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
     
-    // Query con JOIN para obtener datos completos de persona con ubicación y teléfono
+    // Query con JOIN para obtener datos
     const resultados = await query(`
       SELECT 
         p.IDPERSONA as id,
