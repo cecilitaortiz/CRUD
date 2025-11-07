@@ -10,25 +10,32 @@ if (!DB2_CONN) {
   throw new Error('❌ DB2_CONN no está definida en las variables de entorno (.env)');
 }
 
+// Pool de conexiones - Configuración
+// @ts-ignore
+const pool = new ibmdb.Pool();
+const poolConfig = {
+  connectionString: DB2_CONN,
+  maxPoolSize: 5 
+};
+
 /**
- * Ejecuta una query SQL en DB2
+ * Ejecuta una query SQL en DB2 usando el pool de conexiones
  * @param sql - Query SQL 
  * @param params - Array de parámetros
  * @returns Promise con los resultados
  */
 export function query(sql: string, params: any[] = []): Promise<any[]> {
   return new Promise((resolve, reject) => {
-    // @ts-ignore
-    ibmdb.open(DB2_CONN!, (err: any, conn: any) => {
+    pool.open(poolConfig.connectionString, (err: any, conn: any) => {
       if (err) {
-        console.error('❌ Error al conectar a DB2:', err);
+        console.error('❌ Error al obtener conexión del pool:', err);
         return reject(err);
       }
 
       conn.prepare(sql, (errPrepare: any, stmt: any) => {
         if (errPrepare) {
           console.error('❌ Error al preparar statement:', errPrepare);
-          conn.close(() => {});
+          conn.close(() => {}); 
           return reject(errPrepare);
         }
 
@@ -36,16 +43,15 @@ export function query(sql: string, params: any[] = []): Promise<any[]> {
           if (errExec) {
             console.error('❌ Error al ejecutar query:', errExec);
             try { stmt.closeSync && stmt.closeSync(); } catch {}
-            conn.close(() => {});
+            conn.close(() => {}); 
             return reject(errExec);
           }
 
           // Obtener resultados
           result.fetchAll((errFetch: any, data: any[]) => {
-            // Limpiar recursos
             try { result.closeSync && result.closeSync(); } catch {}
             try { stmt.closeSync && stmt.closeSync(); } catch {}
-            conn.close(() => {});
+            conn.close(() => {}); 
 
             if (errFetch) {
               console.error('❌ Error al obtener resultados:', errFetch);
@@ -68,7 +74,6 @@ export function query(sql: string, params: any[] = []): Promise<any[]> {
                   if (Buffer.isBuffer(row[key])) {
                     newRow[key] = row[key].toString('utf8');
                   } else if (typeof row[key] === 'string') {
-                    // Corregir caracteres mal codificados
                     newRow[key] = row[key];
                   } else {
                     newRow[key] = row[key];
@@ -94,31 +99,29 @@ export function query(sql: string, params: any[] = []): Promise<any[]> {
  */
 export function execute(sql: string, params: any[] = []): Promise<number> {
   return new Promise((resolve, reject) => {
-    // @ts-ignore
-    ibmdb.open(DB2_CONN!, (err: any, conn: any) => {
+    pool.open(poolConfig.connectionString, (err: any, conn: any) => {
       if (err) {
-        console.error('❌ Error al conectar a DB2:', err);
+        console.error('❌ Error al obtener conexión del pool:', err);
         return reject(err);
       }
 
       conn.prepare(sql, (errPrepare: any, stmt: any) => {
         if (errPrepare) {
           console.error('❌ Error al preparar statement:', errPrepare);
-          conn.close(() => {});
+          conn.close(() => {}); 
           return reject(errPrepare);
         }
 
         stmt.execute(params, (errExec: any, result: any) => {
           // Limpiar recursos
           try { stmt.closeSync && stmt.closeSync(); } catch {}
-          conn.close(() => {});
+          conn.close(() => {}); 
 
           if (errExec) {
             console.error('❌ Error al ejecutar statement:', errExec);
             return reject(errExec);
           }
 
-          // Retornar el número de filas afectadas
           resolve(result?.length || 0);
         });
       });
@@ -126,9 +129,7 @@ export function execute(sql: string, params: any[] = []): Promise<number> {
   });
 }
 
-/**
- * Prueba la conexión a DB2
- */
+
 export async function testConnection(): Promise<boolean> {
   try {
     const result = await query('SELECT 1 FROM SYSIBM.SYSDUMMY1');

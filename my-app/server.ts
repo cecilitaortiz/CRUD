@@ -139,7 +139,7 @@ app.post('/api/usuarios', async (req, res) => {
       idNacionalidad
     } = req.body;
     
-    // Validaciones básicas
+    // Validaciones
     if (!nombres || !apellidos) {
       return res.status(400).json({ error: 'Nombres y apellidos son requeridos' });
     }
@@ -157,7 +157,7 @@ app.post('/api/usuarios', async (req, res) => {
     }
 
     const tipoIdFinal = tipoIdentificacion || 'CED';
-    const estadoPersona = 'A'; // Siempre Activo al crear
+    const estadoPersona = 'A'; 
     const discapacidadFinal = tieneDiscapacidad || 'N';
     const familDiscapacidadFinal = tieneFamilDiscapacidad || 'N';
     const nacionalidadFinal = idNacionalidad ? parseInt(idNacionalidad.toString()) : 1;

@@ -264,8 +264,14 @@ const FormularioUsuario: React.FC<FormularioUsuarioProps> = ({
         <input
           type="text"
           value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^[A-Za-z,\s]*$/.test(value)) {
+              setNombre(value);
+            }
+          }}
           required
+          maxLength={50}
           style={styles.input}
           placeholder="Apellidos, Nombres"
         />
